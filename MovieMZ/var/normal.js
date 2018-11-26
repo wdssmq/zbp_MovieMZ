@@ -118,8 +118,8 @@
     obj.type = (function() {
       if (is_anime) return "动画";
       if (is_document) return "纪录片";
-      if (is_series) return "电视剧";
       if (is_movie) return "电影";
+      if (is_series) return "电视剧";
     })();
     return JSON.stringify($.extend(data, obj));
   };

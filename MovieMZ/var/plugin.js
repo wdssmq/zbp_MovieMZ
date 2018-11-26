@@ -1,6 +1,84 @@
-$(function() {});
+$(function() {
+  const html =
+    '<p>\
+<strong>\
+-title-[-type-下载]：\
+</strong>\
+</p>\
+<p><a target="_blank" href="-href-" title="-title-[-type-下载]">-href-</a></p>\
+';
+  function fnAddTi(str, i) {
+    let ti = $("#edtTitle").val();
+    if (ti.indexOf(str) > -1) {
+      return;
+    }
+    let match = ti.match(/【([^】]+)】/g);
+    if (!match[i]) {
+      ti += `【${str}】`;
+    } else {
+      ti = ti.replace(match[i], `${match[i]}/【${str}】`);
+    }
+    ti = ti.replace("】/【", "/");
+    $("#edtTitle").val(ti);
+    console.log(match);
+  }
+  function fnEd2k(str) {
+    let objMatch = str.match(
+      /ed2k:\/\/\|file\|\[?([^\.\]]+)\]?.*(\d{4})\.([^\.]+)\.([^\.]+).+-(.+)\.mkv\|(\d+)\|.+?\|\//
+    );
+    if (!objMatch) {
+      return false;
+    }
+    // console.log(objMatch);
+    let arrMInfo = [
+      objMatch[1],
+      objMatch[2],
+      objMatch[3],
+      (objMatch[6] / 1024 / 1024 / 1024).toFixed(2) + "G",
+      objMatch[4],
+      "",
+      objMatch[5]
+    ];
+    if (!/\d+/.test(arrMInfo[2]) && /\d+/.test(arrMInfo[4])) {
+      let tmp = arrMInfo[2];
+      arrMInfo[2] = arrMInfo[4];
+      arrMInfo[4] = tmp;
+    }
+    console.log(arrMInfo);
+    arrMInfo[5] = "中英字幕";
+    if (str.indexOf("2Audios") > -1) arrMInfo[5] = "国英双语";
+    fnAddTi(arrMInfo[2], 2);
+    fnAddTi("ed2k", 3);
+    let content = getContent();
+    if (content.indexOf(str) < 0) {
+      content += "<hr class='movie' />";
+      let add = html;
+      let obj = {};
+      obj.title = ("[" + arrMInfo.join("][") + "]")
+        .replace("HDTV][", "HD-MKV/")
+        .replace(/Bluray\]\[/i, "BD-MKV/");
+      obj.href = str;
+      obj.type = "ed2k";
+      for (let x in obj) {
+        let re = new RegExp(`-${x}-`, "g"); // re为/^\d+bl$/gim
+        add = add.replace(re, obj[x]);
+      }
+      // let add = html.replace(/-title-/g, title).replace(/-title-/g, title);
+      setContent(content + add);
+    }
+  }
+  $(".mmz-input").click(function() {
+    let text = $("#mmz-text")
+      .val()
+      .trim();
+    let arr = text.split("\n");
+    arr.forEach(ln => {
+      fnEd2k(ln.trim());
+    });
+  });
+});
 function MovieMZ_Slide() {
-  $domBox = $("#MovieMZ-Box");
+  let $domBox = $("#MovieMZ-Wraper");
   MovieMZ_Get();
   if ($domBox.is(":hidden")) {
     $domBox
@@ -13,7 +91,7 @@ function MovieMZ_Slide() {
         margin: "5px 0 10px",
         padding: "10px",
         width: "820px",
-        height: "437px",
+        height: "478px",
         opacity: 0
       })
       .animate({
@@ -28,37 +106,31 @@ function MovieMZ_Slide() {
   }
 }
 function MovieMZ_Get(id = "") {
-  $domBox = $("#MovieMZ-Box");
+  let $domBox = $("#MovieMZ-Box");
   Token = $('meta[name="MovieMZ-Token"]').attr("content");
   if (id !== "" && window.MovieData) {
     let data = window.MovieData[id];
     if ($("#edtTitle").val().length > 0 && $("#edtTitle").val() !== "未命名") {
       return;
     }
+    if (data.type) {
+      data.title = `【${data.type}】${data.title}`;
+    }
+    data.title += `【${data.year}】`;
     $("#edtTitle").val(data.title);
     // $("#edtType").val(data.Type);
     if (data.easy) {
       // let add = "资源名称: " + data.title + "." + data.name + "\n" + data.info;
-      data.info = data.info.replace(/上映日期/g, "-more-\n上映日期");
+      data.info = data.info.replace("上映日期: ", "-more-\n上映日期: ");
+      data.info = data.info.replace("首播: ", "-more-\n首播: ");
     }
+    data.info = data.info.replace(/官方网站[^\n]+\n/g, "");
     data.info = data.info.replace(/\n/g, "</p><p>");
     data.info = data.info.replace("<p>-more-</p>", '<hr class="more"/>');
     $("#editor_content").val(data.info);
     $("#edtTag").val(data.tags.join(","));
-    // if ($("#edtAlias").val() == "") {
-    //   $("#edtAlias").val(data.name.replace(/\s/g, "-"));
-    // }
-
-    // $("#cmbCateID").val(data.CateID);
-    // $("#cmbPostStatus").val(data.Status);
-    // $("#cmbTemplate").val(data.Template);
-    // $("#edtDateTime").val(data.PostTime);
-
-    // $("#edtIstop").val(data.IsTop);
-    // $("#edtIslock").val(data.IsLock);
-
-    // $("#editor_intro").val(data.Intro);
     setContent(data.info);
+    $(".content-box ul.content-box-tabs li a.tab2").trigger("click");
     return;
   }
   $.getJSON(ajaxurl + `MovieMZ&token=${Token}`, function(data) {
@@ -96,7 +168,7 @@ function MovieMZ_Get(id = "") {
         '/zb_system/image/admin/delete.png" alt="删除" title="删除" width="16"></a></td></tr>';
     });
     str +=
-      '</table><p style="text-align: right;"><input class="button" onclick="$domBox.fadeOut();return false;" value="关闭" type="button" /></p>';
+      '</table><p style="text-align: right;"><input class="button" onclick="$(\'#MovieMZ-Wraper\').fadeOut();return false;" value="关闭" type="button" /></p>';
     $domBox.html(str);
   });
 }

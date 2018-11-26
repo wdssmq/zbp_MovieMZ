@@ -13,13 +13,26 @@
   "use strict";
   console.log("strart");
   const $ = window.jQuery;
+  // Base Info
   $(".related-info h2").html($(".related-info h2 i"));
   $(".attrs span:hidden").remove();
-  const $imdb = $("div#info a[href^='http://www.imdb.com/title/tt']");
-  $imdb.html($imdb.attr("href"));
+  let is_movie = $("a.bn-sharing[data-type='电影']").length > 0;
+  let is_series = $("a.bn-sharing[data-type='电视剧']").length > 0;
+  let is_anime = $("a[href='/tag/动画'], a[href='/tag/动漫']").length > 0;
+  let is_document = $('span[property="v:genre"]:contains("纪录片")').length > 0;
+  // const $imdb = $("div#info a[href^='http://www.imdb.com/title/tt']");
+  // $imdb.html($imdb.attr("href"));
+
+  // Main
   let obj = { easy: 1 };
   obj.id = location.href.replace(/[^\d]+/g, "");
-  obj.title = document.title.replace("(豆瓣)", "").trim();
+  obj.title = document.title.replace("(豆瓣)", "").trim().replace(/\s/g,".");
+  obj.type = (function() {
+    if (is_anime) return "动画";
+    if (is_document) return "纪录片";
+    if (is_movie) return "电影";
+    if (is_series) return "电视剧";
+  })();
 
   obj.tags = $('#info span[property="v:genre"]')
     .map(function() {
@@ -53,7 +66,7 @@
   obj.info += "\n";
   obj.info += $(".related-info")
     .text()
-    // .replace("©豆瓣", "")
+    .replace("©豆瓣", "")
     .trim();
   obj.info = obj.info.replace(/\n[\s]+/g, "\n");
   $("h1>.year").click(function() {

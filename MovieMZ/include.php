@@ -2,10 +2,6 @@
 #注册插件
 // require 'ParserDom.php';
 RegisterPlugin("MovieMZ", "ActivePlugin_MovieMZ");
-if (!class_exists('ParserDom')) {
-  require_once 'ParserDom.php';
-  require_once 'ParserDom.php';
-}
 function ActivePlugin_MovieMZ()
 {
   Add_Filter_Plugin('Filter_Plugin_Cmd_Ajax', 'MovieMZ_Ajax');
@@ -38,7 +34,26 @@ jj;
 
 function MovieMZ_txt()
 {
-  echo '<div class="ui-draggable" id="MovieMZ-Box" style="display: none;position: absolute;">Loading</div>';
+  echo <<<html
+<div class="content-box ui-draggable" id="MovieMZ-Wraper" style="display: none;position: absolute;">
+  <ul class="content-box-tabs">
+    <li><a href="#MovieMZ-Box" class="default-tab current">缓存列表</a></li>
+    <li><a href="#tab2" class="tab2">插入下载</a></li>
+  </ul>
+  <div style="clear: both;"></div>
+  <div class="content-box-content">
+    <div class="tab-content default-tab" id="MovieMZ-Box">
+      Loading
+    </div>
+    <div class="tab-content" style="text-align: center;" id="tab2">
+      <hr />
+      <textarea spellcheck="false" style="width: 98%;" name="mmz-text" id="mmz-text" cols="30" rows="10"></textarea>
+      <p style="text-align: center;">目前只支持ed2k <br> <input class="button mmz-input" value="解析并插入" type="button" /><input class="button" onclick="$('#MovieMZ-Wraper').fadeOut();return false;" value="关闭" type="button" /></p>
+    </div>
+  </div>
+</div>
+
+html;
 }
 function MovieMZ_Ajax($src)
 {
@@ -72,7 +87,6 @@ function MovieMZ_Ajax($src)
     JsonReturn($array);
     die();
   }
-
 }
 function MovieMZ_Token($n = 137)
 {
@@ -116,7 +130,7 @@ function InstallPlugin_MovieMZ()
     @mkdir($dir, 0755);
     #code
   }
-  $filesList = array("easy","normal");
+  $filesList = array("easy", "normal");
   foreach ($filesList as $key => $value) {
     $uFile = MovieMZ_Path("u-{$value}");
     $vFile = MovieMZ_Path("v-{$value}");
