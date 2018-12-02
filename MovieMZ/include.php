@@ -34,6 +34,12 @@ jj;
 
 function MovieMZ_txt()
 {
+  $read = MovieMZ_Path("read", "host");
+  $read = "<a target=\"_blank\" href=\"{$read}\" title=\"#分享规范（如何判断片子质量）\">{$read}</a>";
+  $bt = "https://bilibili2rss.bid/BT/";
+  $bt = "<a target=\"_blank\" href=\"{$bt}\" title=\"种子转磁力链\">{$bt}</a>";
+  $rss = "http://www.inoreader.com/bundle/0014cd6385f5";
+  $rss = "<a target=\"_blank\" href=\"{$rss}\" title=\"RSS聚合\">{$rss}</a>";
   echo <<<html
 <div class="content-box ui-draggable" id="MovieMZ-Wraper" style="display: none;position: absolute;">
   <ul class="content-box-tabs">
@@ -47,12 +53,19 @@ function MovieMZ_txt()
     </div>
     <div class="tab-content" style="text-align: center;" id="tab2">
       <hr />
-      <textarea spellcheck="false" style="width: 98%;" name="mmz-text" id="mmz-text" cols="30" rows="10"></textarea>
-      <p style="text-align: center;">目前只支持ed2k <br> <input class="button mmz-input" value="解析并插入" type="button" /><input class="button" onclick="$('#MovieMZ-Wraper').fadeOut();return false;" value="关闭" type="button" /></p>
+      <textarea spellcheck="false" style="width: 98%;padding: 7px;" name="mmz-text" id="mmz-text" cols="30" rows="10" onmouseover="this.focus();">
+      </textarea>
+      <p>限特定格式的ed2k或磁力</p>
+      <p><input class="button mmz-input" value="解析并插入" type="button" /><input class="button" onclick="$('#MovieMZ-Wraper').fadeOut();return false;" value="关闭" type="button" /></p>
+      <p style="text-align: left;">
+      参考：<br>
+      1、资源命名规范：{$read}；<br>
+      2、磁力链生成：{$bt}; <br>
+      3、RSS订阅源组合包：{$rss}; <br>
+      </p>
     </div>
   </div>
 </div>
-
 html;
 }
 function MovieMZ_Ajax($src)
@@ -115,6 +128,9 @@ function MovieMZ_Path($file, $t = "path")
       break;
     case "cache":
       return $result . "cache/";
+      break;
+    case "read":
+      return $result . "var/read.html";
       break;
     case "main":
       return $result . "main.php";

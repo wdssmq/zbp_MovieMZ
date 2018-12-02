@@ -13,6 +13,9 @@ $(function() {
       return;
     }
     let match = ti.match(/【([^】]+)】/g);
+    if (!match) {
+      return;
+    }
     if (!match[i]) {
       ti += `【${str}】`;
     } else {
@@ -23,29 +26,34 @@ $(function() {
     console.log(match);
   }
   function fnEd2k(str) {
+    // str =
+    // "ed2k://|file|The.Boss.Baby.2017.720p.BluRay.x264-SPARKS.mkv|3519491608|FE2EA99EC4D9A6C7C1D830C6BDA0026F|h=WR3ZY754P6TWINDWU6J4GNBDSZ2PHJ6L|/";
     let objMatch = str.match(
-      /ed2k:\/\/\|file\|\[?([^\.\]]+)\]?.*(\d{4})\.([^\.]+)\.([^\.]+).+-(.+)\.mkv\|(\d+)\|.+?\|\//
+      /ed2k:\/\/\|file\|\[?(?<name>[^\.\]]+)\]?.*(?<year>\d{4})\.(?<p>[^\.]+)\.(?<s>[^\.]+).+-(?<by>.+)\.mkv\|(?<size>\d+)\|.+?\|\//
     );
+    // console.log(objMatch);
     if (!objMatch) {
       return false;
     }
-    // console.log(objMatch);
     let arrMInfo = [
-      objMatch[1],
-      objMatch[2],
-      objMatch[3],
-      (objMatch[6] / 1024 / 1024 / 1024).toFixed(2) + "G",
-      objMatch[4],
-      "",
-      objMatch[5]
+      objMatch.groups.name,
+      objMatch.groups.year,
+      objMatch.groups.p,
+      objMatch.groups.s,
+      (objMatch.groups.size / 1024 / 1024 / 1024).toFixed(2) + "G",
+      "外挂字幕",
+      objMatch.groups.by
     ];
-    if (!/\d+/.test(arrMInfo[2]) && /\d+/.test(arrMInfo[4])) {
+    console.log(arrMInfo);
+    let $text = $("#mmz-text");
+    if ($text.data("title")) arrMInfo[0] = $text.data("title");
+    if (!/\d+/.test(arrMInfo[2]) && /\d+/.test(arrMInfo[3])) {
       let tmp = arrMInfo[2];
-      arrMInfo[2] = arrMInfo[4];
-      arrMInfo[4] = tmp;
+      arrMInfo[2] = arrMInfo[3];
+      arrMInfo[3] = tmp;
     }
     console.log(arrMInfo);
-    arrMInfo[5] = "中英字幕";
+    if (/CMCT|CnSCG/.test(arrMInfo[5])) arrMInfo[5] = "中英字幕";
     if (str.indexOf("2Audios") > -1) arrMInfo[5] = "国英双语";
     fnAddTi(arrMInfo[2], 2);
     fnAddTi("ed2k", 3);
@@ -63,7 +71,28 @@ $(function() {
         let re = new RegExp(`-${x}-`, "g"); // re为/^\d+bl$/gim
         add = add.replace(re, obj[x]);
       }
-      // let add = html.replace(/-title-/g, title).replace(/-title-/g, title);
+      setContent(content + add);
+    }
+  }
+  // MovieMZ_Slide();
+  // $(".content-box ul.content-box-tabs li a.tab2").trigger("click");
+  function fnMagnetSP(arr) {
+    fnAddTi("BT", 3);
+    let obj = {};
+    obj.title = arr[0].replace("资源名：", "").trim();
+    obj.href = arr[1].replace("磁力链：", "").trim();
+    obj.type = "BT";
+    let $text = $("#mmz-text");
+    if ($text.data("name") && $text.data("title"))
+      obj.title = obj.title.replace($text.data("name"), $text.data("title"));
+    let content = getContent();
+    if (content.indexOf(obj.href) < 0) {
+      content += "<hr class='movie' />";
+      let add = html;
+      for (let x in obj) {
+        let re = new RegExp(`-${x}-`, "g"); // re为/^\d+bl$/gim
+        add = add.replace(re, obj[x]);
+      }
       setContent(content + add);
     }
   }
@@ -72,8 +101,16 @@ $(function() {
       .val()
       .trim();
     let arr = text.split("\n");
+    $("#mmz-text").data("cache", "");
+    let tmp = ["", ""];
     arr.forEach(ln => {
-      fnEd2k(ln.trim());
+      /ed2k:\/\//.test(ln) && fnEd2k(ln.trim());
+      tmp[0] = /资源名：/.test(ln) ? `${ln}` : tmp[0];
+      tmp[1] = /磁力链：/.test(ln) ? `${ln}` : tmp[1];
+      if (tmp[0] && tmp[1]) {
+        fnMagnetSP(tmp);
+        tmp = ["", ""];
+      }
     });
   });
 });
@@ -101,6 +138,7 @@ function MovieMZ_Slide() {
         opacity: 1
       })
       .draggable();
+    $("#mmz-text").val("");
   } else {
     $domBox.fadeOut();
   }
@@ -110,14 +148,15 @@ function MovieMZ_Get(id = "") {
   Token = $('meta[name="MovieMZ-Token"]').attr("content");
   if (id !== "" && window.MovieData) {
     let data = window.MovieData[id];
+    let inpTitle;
     if ($("#edtTitle").val().length > 0 && $("#edtTitle").val() !== "未命名") {
       return;
     }
     if (data.type) {
-      data.title = `【${data.type}】${data.title}`;
+      inpTitle = `【${data.type}】${data.title}`;
     }
-    data.title += `【${data.year}】`;
-    $("#edtTitle").val(data.title);
+    inpTitle += `【${data.year}】`;
+    $("#edtTitle").val(inpTitle);
     // $("#edtType").val(data.Type);
     if (data.easy) {
       // let add = "资源名称: " + data.title + "." + data.name + "\n" + data.info;
@@ -131,6 +170,9 @@ function MovieMZ_Get(id = "") {
     $("#edtTag").val(data.tags.join(","));
     setContent(data.info);
     $(".content-box ul.content-box-tabs li a.tab2").trigger("click");
+    $("#mmz-text").val("");
+    $("#mmz-text").data("title", data.title);
+    $("#mmz-text").data("name", data.name.replace(/\s/g, "."));
     return;
   }
   $.getJSON(ajaxurl + `MovieMZ&token=${Token}`, function(data) {
