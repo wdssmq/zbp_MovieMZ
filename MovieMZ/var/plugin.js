@@ -53,7 +53,7 @@ $(function() {
       arrMInfo[3] = tmp;
     }
     console.log(arrMInfo);
-    if (/CMCT|CnSCG/.test(arrMInfo[5])) arrMInfo[5] = "中英字幕";
+    if (/CMCT|CnSCG/.test(arrMInfo[6])) arrMInfo[6] = "中英字幕";
     if (str.indexOf("2Audios") > -1) arrMInfo[5] = "国英双语";
     fnAddTi(arrMInfo[2], 2);
     fnAddTi("ed2k", 3);
@@ -77,6 +77,11 @@ $(function() {
   // MovieMZ_Slide();
   // $(".content-box ul.content-box-tabs li a.tab2").trigger("click");
   function fnMagnetSP(arr) {
+    if (arr[0].indexOf("1080") > -1) {
+      fnAddTi("1080p", 2);
+    } else {
+      fnAddTi("720p", 2);
+    }
     fnAddTi("BT", 3);
     let obj = {};
     obj.title = arr[0].replace("资源名：", "").trim();
@@ -172,7 +177,7 @@ function MovieMZ_Get(id = "") {
     $(".content-box ul.content-box-tabs li a.tab2").trigger("click");
     $("#mmz-text").val("");
     $("#mmz-text").data("title", data.title);
-    $("#mmz-text").data("name", data.name.replace(/\s/g, "."));
+    $("#mmz-text").data("name", data.name.replace(/\s|:/g, "."));
     return;
   }
   $.getJSON(ajaxurl + `MovieMZ&token=${Token}`, function(data) {
