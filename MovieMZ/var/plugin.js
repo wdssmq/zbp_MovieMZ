@@ -118,6 +118,19 @@ $(function() {
       }
     });
   });
+  $(".js-savCookie").click(function() {
+    let obj = {};
+    obj.cate = [
+      $("#cmbCateID option:selected").val(),
+      $("#cmbCateID option:selected").text()
+    ];
+    obj.status = [
+      $("#cmbPostStatus option:selected").val(),
+      $("#cmbPostStatus option:selected").text()
+    ];
+    localStorage.MovieForm = JSON.stringify(obj);
+    $(".js-lsCookie").html(`当前值：${obj.cate[1]} ${obj.status[1]}`);
+  });
 });
 function MovieMZ_Slide() {
   let $domBox = $("#MovieMZ-Wraper");
@@ -174,10 +187,17 @@ function MovieMZ_Get(id = "") {
     $("#editor_content").val(data.info);
     $("#edtTag").val(data.tags.join(","));
     setContent(data.info);
+
     $(".content-box ul.content-box-tabs li a.tab2").trigger("click");
     $("#mmz-text").val("");
     $("#mmz-text").data("title", data.title);
-    $("#mmz-text").data("name", data.name.replace(/\s|:/g, "."));
+    $("#mmz-text").data("name", data.name.replace(/[\s:!]+/g, "."));
+    if (localStorage.MovieForm) {
+      let obj = JSON.parse(localStorage.MovieForm);
+      $("#cmbCateID").val(obj.cate[0]);
+      $("#cmbPostStatus").val(obj.status[0]);
+      $(".js-lsCookie").html(`当前值：${obj.cate[1]} ${obj.status[1]}`);
+    }
     return;
   }
   $.getJSON(ajaxurl + `MovieMZ&token=${Token}`, function(data) {

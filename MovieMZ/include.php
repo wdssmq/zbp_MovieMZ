@@ -57,12 +57,13 @@ function MovieMZ_txt()
       </textarea>
       <p>限特定格式的ed2k或磁力</p>
       <p><input class="button mmz-input" value="解析并插入" type="button" /><input class="button" onclick="$('#MovieMZ-Wraper').fadeOut();return false;" value="关闭" type="button" /></p>
-      <p style="text-align: left;">
+      <p style="text-align: left;width: 75%;float: left;">
       参考：<br>
-      1、资源命名规范：{$read}；<br>
-      2、磁力链生成：{$bt}; <br>
+      1、磁力链生成：{$bt}; <br>
+      2、资源命名规范：{$read}；<br>
       3、RSS订阅源组合包：{$rss}; <br>
       </p>
+      <p style="text-align: right;width: 25%;float: left;padding-right: 5px;"><br><a href="javascript:;" title="保存" class="js-savCookie">将右侧信息设置为默认</a>→→<br><span class="js-lsCookie"></span></p>
     </div>
   </div>
 </div>
