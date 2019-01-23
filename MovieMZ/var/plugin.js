@@ -117,6 +117,15 @@ $(function() {
         tmp = ["", ""];
       }
     });
+    $("html, body").animate(
+      {
+        scrollTop: $("#insertintro").offset().top
+      },
+      200,
+      function() {
+        MovieMZ_Slide(1);
+      }
+    );
   });
   $(".js-savCookie").click(function() {
     let obj = {};
@@ -132,10 +141,11 @@ $(function() {
     $(".js-lsCookie").html(`当前值：${obj.cate[1]} ${obj.status[1]}`);
   });
 });
-function MovieMZ_Slide() {
+function MovieMZ_Slide(scroll = 0) {
   let $domBox = $("#MovieMZ-Wraper");
   MovieMZ_Get();
-  if ($domBox.is(":hidden")) {
+  if ($domBox.is(":hidden") || scroll) {
+    let intH = $domBox.height() < 100 ? 478 : $domBox.height();
     $domBox
       .css({
         backgroundColor: "#fdfdfd",
@@ -146,17 +156,21 @@ function MovieMZ_Slide() {
         margin: "5px 0 10px",
         padding: "10px",
         width: "820px",
-        height: "478px",
-        opacity: 0
+        // height: "478px",
+        opacity: scroll
       })
       .animate({
-        top:
-          ($(window).height() - $domBox.height()) / 2 + $(window).scrollTop(),
+        top: ($(window).height() - intH) / 2 + $(window).scrollTop() - 59,
         left: ($(window).width() - $domBox.width()) / 2,
+        height: "auto",
         opacity: 1
       })
       .draggable();
     $("#mmz-text").val("");
+    $("#tab2 p").css({
+      padding: "0.1em 0",
+      lineHeight: "1.4em"
+    });
   } else {
     $domBox.fadeOut();
   }
