@@ -14,6 +14,7 @@
   console.log("strart");
   const $ = window.jQuery;
   // Base Info
+  $(".related-info h2 i").text($(".related-info h2 i").text() + ":");
   $(".related-info h2").html($(".related-info h2 i"));
   $(".attrs span:hidden").remove();
   let is_movie = $("a.bn-sharing[data-type='电影']").length > 0;
@@ -25,8 +26,13 @@
 
   // Main
   let obj = { easy: 1 };
+  obj.link =
+    "https://" + location.href.match(/movie.douban.com\/subject\/\d+\//);
   obj.id = location.href.replace(/[^\d]+/g, "");
-  obj.title = document.title.replace("(豆瓣)", "").trim().replace(/\s/g,".");
+  obj.title = document.title
+    .replace("(豆瓣)", "")
+    .trim()
+    .replace(/\s/g, ".");
   obj.type = (function() {
     if (is_anime) return "动画";
     if (is_document) return "纪录片";
@@ -56,6 +62,7 @@
     $("#info")
       .text()
       .trim() + "\n";
+  // obj.info += `豆瓣链接: ${obj.link}\n`;
   obj.info +=
     $(".rating_logo")
       .text()
@@ -69,6 +76,7 @@
     .replace("©豆瓣", "")
     .trim();
   obj.info = obj.info.replace(/\n[\s]+/g, "\n");
+  obj.info = obj.info.replace(/官方网站: [^\n]+\n/g, "");
   $("h1>.year").click(function() {
     postData("-url-", obj, function(data) {
       console.log(data.data);
@@ -95,6 +103,9 @@
   });
   // console.log(obj);
   function postData(url, data, callback = function() {}) {
+    if (url === "-url-") {
+      return;
+    }
     GM_xmlhttpRequest({
       method: "POST",
       data: JSON.stringify(data),

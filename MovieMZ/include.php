@@ -95,7 +95,12 @@ function MovieMZ_Ajax($src)
     $array = array();
     foreach ($files as $id => $file) {
       $obj = json_decode(file_get_contents($file));
-      $obj->time = date("Ymd H:i", filemtime($file));
+      $fileTime = filemtime($file);
+      if (time() - $fileTime > 1123200) {
+        @unlink($file);
+        continue;
+      }
+      $obj->time = date("Ymd H:i", $fileTime);
       $array[$id] = $obj;
     }
     JsonReturn($array);
@@ -113,7 +118,10 @@ function MovieMZ_Path($file, $t = "path")
   $result = $zbp->$t . "zb_users/plugin/MovieMZ/";
   switch ($file) {
     case "plugin":
-      return $result . "var/plugin.js";
+      return $result . "var/plugin.js?v=" . time();
+      break;
+    case "lock":
+      return $result . "usr/lock.ini";
       break;
     case "u-normal":
       return $result . "usr/normal.js";
@@ -148,10 +156,11 @@ function InstallPlugin_MovieMZ()
     #code
   }
   $filesList = array("easy", "normal");
+  $lock = MovieMZ_Path("lock");
   foreach ($filesList as $key => $value) {
     $uFile = MovieMZ_Path("u-{$value}");
     $vFile = MovieMZ_Path("v-{$value}");
-    if (!is_file($uFile)) {
+    if (!is_file($lock) || !is_file($uFile)) {
       @mkdir(dirname($uFile));
       copy($vFile, $uFile);
     }

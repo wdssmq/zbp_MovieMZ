@@ -28,6 +28,9 @@ $(function() {
   function fnEd2k(str) {
     // str =
     // "ed2k://|file|The.Boss.Baby.2017.720p.BluRay.x264-SPARKS.mkv|3519491608|FE2EA99EC4D9A6C7C1D830C6BDA0026F|h=WR3ZY754P6TWINDWU6J4GNBDSZ2PHJ6L|/";
+    // ed2k://|file|[毒液：致命守护者].Venom.2018.BluRay.1080p.x264.DTS-CMCT.mkv|10742193842|17b13dbbb460c53e57faff427fe6e806|/
+    str = str.replace(/BluRay\.(720p|1080p)/,"$1.BluRay");
+    // console.log(str);
     let objMatch = str.match(
       /ed2k:\/\/\|file\|\[?(?<name>[^\.\]]+)\]?.*(?<year>\d{4})\.(?<p>[^\.]+)\.(?<s>[^\.]+).+-(?<by>.+)\.mkv\|(?<size>\d+)\|.+?\|\//
     );
@@ -53,7 +56,7 @@ $(function() {
       arrMInfo[3] = tmp;
     }
     console.log(arrMInfo);
-    if (/CMCT|CnSCG/.test(arrMInfo[6])) arrMInfo[6] = "中英字幕";
+    if (/CMCT|CnSCG/.test(arrMInfo[6])) arrMInfo[5] = "中英字幕";
     if (str.indexOf("2Audios") > -1) arrMInfo[5] = "国英双语";
     fnAddTi(arrMInfo[2], 2);
     fnAddTi("ed2k", 3);

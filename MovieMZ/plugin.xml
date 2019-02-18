@@ -2,7 +2,7 @@
 <plugin version="php">
 <id>MovieMZ</id>
 <name>电影信息反向获取</name>
-<url>https://app.zblogcn.com/?auth=6401c4a7-89cd-48f9-a68b-d6464d8c3bc8</url>
+<url>//jq.qq.com/?_wv=1027&amp;k=5sE9rKH</url>
 <note>获取格式化的电影信息介绍</note>
 <description>置百丈玄冰而崩裂，掷须臾池水而漂摇。</description>
 <path>main.php</path>
@@ -21,7 +21,7 @@
 <adapted>151935</adapted>
 <version>1.0</version>
 <pubdate>2018-10-10</pubdate>
-<modified>2018-12-22</modified>
+<modified>2019-02-18</modified>
 <price>13.7</price>
 <phpver>5.4</phpver>
 <advanced>
