@@ -55,8 +55,12 @@
   obj.year = $("#content > h1 > span.year")
     .text()
     .substr(1, 4);
-  obj.info = `中文名: ${obj.title}\n`;
-  obj.info += `片名: ${obj.name}\n`;
+  if (obj.name) {
+    obj.info = `中文名: ${obj.title}\n`;
+    obj.info += `片名: ${obj.name}\n`;
+  } else {
+    obj.info = `片名: ${obj.title}\n`;
+  }
   obj.info += `年代: ${obj.year}\n`;
   obj.info +=
     $("#info")
@@ -84,8 +88,10 @@
     GM_setClipboard(obj.info);
     $(this)
       .css({ fontSize: "12px" })
-      .text("复制成功")
-      .delay(737)
+      .html(
+        '复制成功 <a href="-edtUrl-" target="_blank" rel="noopener noreferrer">新建文章</a>'
+      )
+      .delay(2737)
       .animate(
         {
           opacity: 0
@@ -103,9 +109,6 @@
   });
   // console.log(obj);
   function postData(url, data, callback = function() {}) {
-    if (url === "-url-") {
-      return;
-    }
     GM_xmlhttpRequest({
       method: "POST",
       data: JSON.stringify(data),

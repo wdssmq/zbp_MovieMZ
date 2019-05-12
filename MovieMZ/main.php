@@ -22,8 +22,10 @@ $type = GetVars("type", "GET") === "easy" ? $type = GetVars("type", "GET") : "no
 // $m = $type === "normal" ? array("m-now", "") : array("", "m-now");
 
 $url = "{$zbp->host}zb_system/cmd.php?act=ajax&src=MovieMZ&token=" . MovieMZ_Token(59);
+$edtUrl = "{$zbp->host}zb_system/cmd.php?act=ArticleEdt";
 $js = file_get_contents(MovieMZ_Path("u-{$type}"));
 $js = str_replace("-url-", $url, $js);
+$js = str_replace("-edtUrl-", $edtUrl, $js);
 ?>
 <div id="divMain">
   <div class="divHeader"><?php echo $blogtitle; ?></div>
@@ -37,6 +39,7 @@ $js = str_replace("-url-", $url, $js);
   <textarea onmouseover="this.select();" onclick="that = this;setTimeout(function(){that.select()},150);" name="js" id="js" class="js" style="width: 90%; height: 600px" autocomplete="off" spellcheck="false"><?php echo $js; ?></textarea>
   <?php //echo zbpform::textarea("js", $js, "90%","600px"); ?>
   </div>
+
 </div>
 <script>
 $(function () {

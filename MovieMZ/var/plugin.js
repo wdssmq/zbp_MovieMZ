@@ -57,6 +57,7 @@ $(function() {
     }
     console.log(arrMInfo);
     if (/CMCT|CnSCG/.test(arrMInfo[6])) arrMInfo[5] = "中英字幕";
+    if (/WiKi/.test(arrMInfo[6])) arrMInfo[5] = "内挂字幕";
     if (str.indexOf("2Audios") > -1) arrMInfo[5] = "国英双语";
     fnAddTi(arrMInfo[2], 2);
     fnAddTi("ed2k", 3);

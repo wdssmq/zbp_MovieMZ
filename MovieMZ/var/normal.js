@@ -94,8 +94,10 @@
     GM_setClipboard(movieclip);
     $(this)
       .css({ fontSize: "12px" })
-      .text("复制成功")
-      .delay(737)
+      .html(
+        '复制成功 <a href="-edtUrl-" target="_blank" rel="noopener noreferrer">新建文章</a>'
+      )
+      .delay(2737)
       .animate(
         {
           opacity: 0
