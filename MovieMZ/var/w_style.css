@@ -1,0 +1,62 @@
+.fade {
+  opacity: 0;
+  transition: all 0.4s linear;
+}
+.fade.in {
+  opacity: 1;
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 444;
+  display: none;
+  background-color: #000;
+}
+.modal-backdrop.in {
+  opacity: 0.5;
+}
+
+#DLBox,
+.mmz-box {
+  color: #666;
+  background-color: #f9f9f9;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+  display: none;
+  max-width: 680px;
+  position: fixed;
+  width: 96%;
+  z-index: 555;
+  padding: 1.3em 1em;
+}
+#DLBox > a span::before,
+.mmz-box > a span::before {
+  content: "x";
+  color: #000;
+  font-size: 16px;
+  position: absolute;
+  right: 10px;
+  top: 3px;
+}
+#DLBox p,
+.mmz-box p {
+  margin: 0 0 0.37em !important;
+  text-indent: 1em;
+  font-size: 15px;
+  line-height: 1.47em;
+}
+#DLBox p strong,
+.mmz-box p strong {
+  color: #555;
+}
+#DLBox hr,
+.mmz-box hr {
+  background-color: #e5e5e5;
+  border: none;
+  display: block;
+  height: 1px;
+  margin: 0.4em 0;
+}

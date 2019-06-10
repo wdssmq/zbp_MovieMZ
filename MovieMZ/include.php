@@ -6,8 +6,32 @@ function ActivePlugin_MovieMZ()
 {
   Add_Filter_Plugin('Filter_Plugin_Cmd_Ajax', 'MovieMZ_Ajax');
   Add_Filter_Plugin('Filter_Plugin_Edit_Begin', 'MovieMZ_SetHint');
-  // Add_Filter_Plugin('Filter_Plugin_Edit_Response3', 'MovieMZ_Main');
   Add_Filter_Plugin('Filter_Plugin_Edit_Response2', 'MovieMZ_txt');
+  Add_Filter_Plugin("Filter_Plugin_ViewPost_Template", 'MovieMZ_ViewPost');
+}
+function MovieMZ_ViewPost(&$template)
+{
+  global $zbp;
+  $article = $template->GetTags('article');
+  $array = explode("<hr class=\"movie\"/>", $article->Content);
+  if (count($array) > 1) {
+    $html = file_get_contents(MovieMZ_Path("w-html"));
+    foreach ($array as $key => $value) {
+      if ($key === 0) {
+        $article->Content = $value;
+        continue;
+      }
+      $html = str_replace("<!--movie-->", "{$value}<!--movie-->", $html);
+    }
+    $article->Content .= $html;
+  }
+  if (strpos($article->Content, "ShowDLBox") > 0) {
+    $style = MovieMZ_Path("w-css", "host");
+    $zbp->header .= "<link rel=\"stylesheet\" href=\"{$style}\">";
+    $wJS = MovieMZ_Path("w-js", "host");
+    $zbp->footer .= "<script src=\"{$wJS}\" type=\"text/javascript\"></script>";
+    $article->Content = $article->Content;
+  }
 }
 function MovieMZ_SetHint()
 {
@@ -123,6 +147,15 @@ function MovieMZ_Path($file, $t = "path")
     case "lock":
       return $result . "usr/lock.ini";
       break;
+    case "w-css":
+      return $result . "var/w_style.css";
+      break;
+    case "w-js":
+      return $result . "var/w_script.js";
+      break;
+    case "w-html":
+      return $result . "var/w_html.html";
+      break;
     case "u-normal":
       return $result . "usr/normal.js";
       break;
@@ -167,5 +200,4 @@ function InstallPlugin_MovieMZ()
   }
 }
 function UninstallPlugin_MovieMZ()
-{
-}
+{ }
