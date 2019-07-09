@@ -11,10 +11,15 @@ $(function() {
     ),
       a > 1 && $(this).flash(a - 1);
   };
-  $Show = $("#ShowDLBox,.mmz-show");
-  $Box = $("#DLBox,.mmz-box");
+  $Show = $(".mmz-show");
+  $Box = $(".mmz-box");
   $Box.after('<div class="modal-backdrop fade"></div>');
   $Show.click(function() {
+    let _this = $(this);
+    if (!_this.hasClass("is-active") && _hmt) {
+      _hmt.push(["_trackEvent", "电影下载", "查看"]);
+      _this.addClass("is-active");
+    }
     $Box
       .addClass("fade")
       .show()
@@ -33,8 +38,8 @@ $(function() {
       $(".js-flash").flash(2);
     }, 50);
   });
-  $(document).delegate(".modal-backdrop,#close", "click", function() {
-    $("#DLBox,.mmz-box,.modal-backdrop")
+  $(document).delegate(".modal-backdrop,.mmz-close", "click", function() {
+    $(".mmz-box,.modal-backdrop")
       .fadeOut(300)
       .removeClass("in"),
       !1;

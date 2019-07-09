@@ -25,7 +25,7 @@ function MovieMZ_ViewPost(&$template)
     }
     $article->Content .= $html;
   }
-  if (strpos($article->Content, "ShowDLBox") > 0) {
+  if (strpos($article->Content, "mmz-show") > 0) {
     $style = MovieMZ_Path("w-css", "host");
     $zbp->header .= "<link rel=\"stylesheet\" href=\"{$style}\">";
     $wJS = MovieMZ_Path("w-js", "host");
