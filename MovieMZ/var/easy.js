@@ -16,7 +16,8 @@
   // Base Info
   $(".related-info h2 i").text($(".related-info h2 i").text() + ":");
   $(".related-info h2").html($(".related-info h2 i"));
-  $(".attrs span:hidden").remove();
+  $(".attrs span:hidden,span.short").remove();
+  $(".all.hidden").removeClass("hidden");
   let is_movie = $("a.bn-sharing[data-type='电影']").length > 0;
   let is_series = $("a.bn-sharing[data-type='电视剧']").length > 0;
   let is_anime = $("a[href='/tag/动画'], a[href='/tag/动漫']").length > 0;

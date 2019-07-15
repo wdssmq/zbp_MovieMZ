@@ -35,7 +35,7 @@ $js = str_replace("-edtUrl-", $edtUrl, $js);
     <?php require_once "about.php"; ?>
   </div>
   <div id="divMain2">
-  <p><b>以下代码仅限当前站点作者使用，请勿传播分享；</b><a target="_blank" href="https://greasyfork.org/zh-CN/help" title="GreasyFork站点帮助">点击查看使用说明</a>　－　<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=519cdb34bab5bccb8fbc36acb3400c5b2d00679ab8b3d9ab4fc385631c49a204"><img src="//pub.idqqimg.com/wpa/images/group.png" alt="我的咸鱼心" title="我的咸鱼心"></a></p>
+  <p><b>以下代码仅限当前站点作者使用，请勿传播分享；</b><a target="_blank" href="https://greasyfork.org/zh-CN/help" title="GreasyFork站点帮助">点击查看使用说明</a> - <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=519cdb34bab5bccb8fbc36acb3400c5b2d00679ab8b3d9ab4fc385631c49a204"><img src="//pub.idqqimg.com/wpa/images/group.png" alt="我的咸鱼心" title="我的咸鱼心"></a></p>
   <textarea onmouseover="this.select();" onclick="that = this;setTimeout(function(){that.select()},150);" name="js" id="js" class="js" style="width: 90%; height: 600px" autocomplete="off" spellcheck="false"><?php echo $js; ?></textarea>
   <?php //echo zbpform::textarea("js", $js, "90%","600px"); ?>
   </div>
