@@ -29,7 +29,7 @@ $(function() {
     // str =
     // "ed2k://|file|The.Boss.Baby.2017.720p.BluRay.x264-SPARKS.mkv|3519491608|FE2EA99EC4D9A6C7C1D830C6BDA0026F|h=WR3ZY754P6TWINDWU6J4GNBDSZ2PHJ6L|/";
     // ed2k://|file|[毒液：致命守护者].Venom.2018.BluRay.1080p.x264.DTS-CMCT.mkv|10742193842|17b13dbbb460c53e57faff427fe6e806|/
-    str = str.replace(/BluRay\.(720p|1080p)/,"$1.BluRay");
+    str = str.replace(/BluRay\.(720p|1080p)/, "$1.BluRay");
     // console.log(str);
     let objMatch = str.match(
       /ed2k:\/\/\|file\|\[?(?<name>[^\.\]]+)\]?.*(?<year>\d{4})\.(?<p>[^\.]+)\.(?<s>[^\.]+).+-(?<by>.+)\.mkv\|(?<size>\d+)\|.+?\|\//
@@ -89,7 +89,10 @@ $(function() {
     fnAddTi("BT", 3);
     let obj = {};
     obj.title = arr[0].replace("资源名：", "").trim();
-    obj.href = arr[1].replace("磁力链：", "").trim();
+    obj.href = arr[1]
+      .replace("磁力链：", "")
+      .trim()
+      .replace("&", "&amp;");
     obj.type = "BT";
     let $text = $("#mmz-text");
     if ($text.data("name") && $text.data("title"))
@@ -200,7 +203,7 @@ function MovieMZ_Get(id = "") {
       data.info = data.info.replace("首播: ", "-more-\n首播: ");
     }
     data.info = data.info.replace(/官方网站[^\n]+\n/g, "");
-    data.info = data.info.replace(/\n/g, "</p><p>");
+    data.info = data.info.replace(/\n/g, "</p>\n<p>");
     data.info = data.info.replace("<p>-more-</p>", '<hr class="more"/>');
     $("#editor_content").val(data.info);
     $("#edtTag").val(data.tags.join(","));
@@ -264,4 +267,10 @@ function MovieMZ_Del(id) {
     $("#movie-" + id + " .td15").html("已删除");
   });
   return false;
+}
+function getContent() {
+  return editor_api.editor.content.get();
+}
+function setContent(str) {
+  editor_api.editor.content.put(str);
 }

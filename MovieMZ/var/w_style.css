@@ -43,9 +43,14 @@
 
 .mmz-box p {
   margin: 0 0 0.37em !important;
-  text-indent: 1em;
+  text-indent: 1.7em;
   font-size: 15px;
   line-height: 1.47em;
+}
+
+.mmz-box a {
+  border-bottom: 1px dotted currentColor;
+  word-break: break-all;
 }
 
 .mmz-box p strong {

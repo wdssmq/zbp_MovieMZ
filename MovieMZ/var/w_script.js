@@ -13,7 +13,8 @@ $(function() {
   };
   $Show = $(".mmz-show");
   $Box = $(".mmz-box");
-  $Box.after('<div class="modal-backdrop fade"></div>');
+  $("body").append('<div class="modal-backdrop fade"></div>');
+  $("body").append($Box);
   $Show.click(function() {
     let _this = $(this);
     if (!_this.hasClass("is-active") && _hmt) {
@@ -40,8 +41,8 @@ $(function() {
   });
   $(document).delegate(".modal-backdrop,.mmz-close", "click", function() {
     $(".mmz-box,.modal-backdrop")
-      .fadeOut(300)
-      .removeClass("in"),
+      .removeClass("in")
+      .fadeOut("slow"),
       !1;
   });
 });

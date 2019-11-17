@@ -13,6 +13,7 @@ function MovieMZ_ViewPost(&$template)
 {
   global $zbp;
   $article = $template->GetTags('article');
+  $article->Content = str_replace("<hr class='movie' />", "<hr class=\"movie\"/>", $article->Content);
   $array = explode("<hr class=\"movie\"/>", $article->Content);
   if (count($array) > 1) {
     $html = file_get_contents(MovieMZ_Path("w-html"));
@@ -60,7 +61,7 @@ function MovieMZ_txt()
 {
   $read = MovieMZ_Path("read", "host");
   $read = "<a target=\"_blank\" href=\"{$read}\" title=\"#分享规范（如何判断片子质量）\">{$read}</a>";
-  $bt = "https://bilibili2rss.bid/BT/";
+  $bt = "http://test.wdssmq.com/bt2mag/";
   $bt = "<a target=\"_blank\" href=\"{$bt}\" title=\"种子转磁力链\">{$bt}</a>";
   $rss = "http://www.inoreader.com/bundle/0014cd6385f5";
   $rss = "<a target=\"_blank\" href=\"{$rss}\" title=\"RSS聚合\">{$rss}</a>";
@@ -107,13 +108,13 @@ function MovieMZ_Ajax($src)
     $obj = json_decode($str);
     if (is_object($obj) && isset($obj->id)) {
       file_put_contents(MovieMZ_Path("cache") . "{$obj->id}.txt", $str);
-      JsonReturn((object)array("id" => $obj->id));
+      JsonReturn((object) array("id" => $obj->id));
     }
     die();
   } else if ($ID = GetVars("id", "GET")) {
     $file = MovieMZ_Path("cache/{$ID}.txt");
     @unlink($file);
-    JsonReturn((object)array());
+    JsonReturn((object) array());
   } else {
     $files = GetFilesInDir(MovieMZ_Path("cache"), "txt");
     $array = array();
