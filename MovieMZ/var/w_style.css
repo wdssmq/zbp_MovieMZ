@@ -49,8 +49,14 @@
 }
 
 .mmz-box a {
+  text-decoration: none;
   border-bottom: 1px dotted currentColor;
   word-break: break-all;
+}
+
+.mmz-box a:hover {
+  text-decoration: none;
+  border-bottom-style: solid;
 }
 
 .mmz-box p strong {
