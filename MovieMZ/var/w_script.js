@@ -26,7 +26,7 @@ $(function() {
       .show()
       .css({
         top: ($(window).height() - $Box.height()) / 2 - 59 + "px",
-        left: ($(window).width() - $Box.width()) / 2 + "px"
+        left: ($(window).width() - $Box.outerWidth()) / 2 + "px"
       })
       .addClass("in");
     $(".modal-backdrop")
@@ -45,4 +45,6 @@ $(function() {
       .fadeOut("slow"),
       !1;
   });
+  // console.log($(window).width());
+  // console.log($(".mmz-box").outerWidth());
 });

@@ -23,9 +23,10 @@
   color: #666;
   background-color: #f9f9f9;
   border: 1px solid #d6d6d6;
+  font-size: 16px;
   border-radius: 8px;
   display: none;
-  max-width: 680px;
+  max-width: 628px;
   position: fixed;
   width: 96%;
   z-index: 555;
@@ -42,10 +43,14 @@
 }
 
 .mmz-box p {
-  margin: 0 0 0.37em !important;
+  margin: 0 0 0.37em;
   text-indent: 1.7em;
   font-size: 15px;
   line-height: 1.47em;
+}
+
+.mmz-box p:last-child {
+  margin-bottom: 0;
 }
 
 .mmz-box a {
