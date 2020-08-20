@@ -105,6 +105,7 @@ function MovieMZ_Ajax($src)
     return;
   }
   if ($str = file_get_contents('php://input')) {
+    // Logs($str);
     $obj = json_decode($str);
     if (is_object($obj) && isset($obj->id)) {
       file_put_contents(MovieMZ_Path("cache") . "{$obj->id}.txt", $str);
@@ -143,19 +144,19 @@ function MovieMZ_Path($file, $t = "path")
   $result = $zbp->$t . "zb_users/plugin/MovieMZ/";
   switch ($file) {
     case "plugin":
-      return $result . "var/plugin.js?v=2020-03-27";
+      return $result . "script/plugin.js?v=2020-03-27";
       break;
     case "lock":
       return $result . "usr/lock.ini";
       break;
     case "w-css":
-      return $result . "var/w_style.css?v=2020-03-27";
+      return $result . "web/w_style.css?v=2020-03-27";
       break;
     case "w-js":
-      return $result . "var/w_script.js?v=2020-03-27";
+      return $result . "web/w_script.js?v=2020-03-27";
       break;
     case "w-html":
-      return $result . "var/w_html.html";
+      return $result . "web/w_html.html";
       break;
     case "u-normal":
       return $result . "usr/normal.js";
@@ -173,7 +174,7 @@ function MovieMZ_Path($file, $t = "path")
       return $result . "cache/";
       break;
     case "read":
-      return $result . "var/read.html";
+      return $result . "read/read.html";
       break;
     case "main":
       return $result . "main.php";
@@ -201,4 +202,5 @@ function InstallPlugin_MovieMZ()
   }
 }
 function UninstallPlugin_MovieMZ()
-{ }
+{
+}
