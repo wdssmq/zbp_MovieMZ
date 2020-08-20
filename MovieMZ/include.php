@@ -45,11 +45,11 @@ jj;
   $files = GetFilesInDir(MovieMZ_Path("cache"), "txt");
   $logs = GetFilesInDir(MovieMZ_Path("cache"), "log");
   if (count($logs) > 0) {
-    $zbp->SetHint("tips", '电影信息生成：鉴权错误，请重新部署脚本或忽略本提示<a href="' . MovieMZ_Path("main", "host") . '">点击处理</a>');
+    $zbp->SetHint("tips", '电影信息生成：鉴权错误，请重新部署脚本或忽略本提示<a title="点击处理" href="' . MovieMZ_Path("main", "host") . '">点击处理</a>');
     @unlink(reset($logs));
   }
   if (count($files) > 0)
-    $zbp->SetHint("tips", '电影信息生成：有未处理的抓取信息<a href="javascript:;" onclick="MovieMZ_Slide()">点击查看</a>');
+    $zbp->SetHint("tips", '电影信息生成：有未处理的抓取信息<a title="点击查看" href="javascript:;" onclick="MovieMZ_Slide()">点击查看</a>');
 }
 // function MovieMZ_Main()
 // {
@@ -144,16 +144,16 @@ function MovieMZ_Path($file, $t = "path")
   $result = $zbp->$t . "zb_users/plugin/MovieMZ/";
   switch ($file) {
     case "plugin":
-      return $result . "script/plugin.js?v=2020-03-27";
+      return $result . "script/plugin.js?v=2020-08-20";
       break;
     case "lock":
       return $result . "usr/lock.ini";
       break;
     case "w-css":
-      return $result . "web/w_style.css?v=2020-03-27";
+      return $result . "web/w_style.css?v=2020-08-20";
       break;
     case "w-js":
-      return $result . "web/w_script.js?v=2020-03-27";
+      return $result . "web/w_script.js?v=2020-08-20";
       break;
     case "w-html":
       return $result . "web/w_html.html";

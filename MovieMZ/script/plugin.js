@@ -1,4 +1,18 @@
-$(function() {
+$(function () {
+  $(".hint")
+    .css({
+      minHeight: "3px",
+    })
+    .find("p")
+    .addClass("hint_always");
+  $(".hint").hover(
+    function () {
+      $(this).find("p").stop(true, false).slideDown();
+    },
+    function () {
+      $(this).find("p").stop(false, true).delay(1300).slideUp();
+    }
+  );
   const html =
     '<p>\
 <strong>\
@@ -45,7 +59,7 @@ $(function() {
       objMatch.groups.s,
       (objMatch.groups.size / 1024 / 1024 / 1024).toFixed(2) + "G",
       "外挂字幕",
-      objMatch.groups.by
+      objMatch.groups.by,
     ];
     console.log(arrMInfo);
     let $text = $("#mmz-text");
@@ -89,10 +103,7 @@ $(function() {
     fnAddTi("BT", 3);
     let obj = {};
     obj.title = arr[0].replace("资源名：", "").trim();
-    obj.href = arr[1]
-      .replace("磁力链：", "")
-      .trim()
-      .replace("&", "&amp;");
+    obj.href = arr[1].replace("磁力链：", "").trim().replace("&", "&amp;");
     obj.type = "BT";
     let $text = $("#mmz-text");
     if ($text.data("name") && $text.data("title"))
@@ -108,14 +119,12 @@ $(function() {
       setContent(content + add);
     }
   }
-  $(".mmz-input").click(function() {
-    let text = $("#mmz-text")
-      .val()
-      .trim();
+  $(".mmz-input").click(function () {
+    let text = $("#mmz-text").val().trim();
     let arr = text.split("\n");
     $("#mmz-text").data("cache", "");
     let tmp = ["", ""];
-    arr.forEach(ln => {
+    arr.forEach((ln) => {
       /ed2k:\/\//.test(ln) && fnEd2k(ln.trim());
       tmp[0] = /资源名：/.test(ln) ? `${ln}` : tmp[0];
       tmp[1] = /磁力链：/.test(ln) ? `${ln}` : tmp[1];
@@ -126,23 +135,23 @@ $(function() {
     });
     $("html, body").animate(
       {
-        scrollTop: $("#insertintro").offset().top
+        scrollTop: $("#insertintro").offset().top,
       },
       200,
-      function() {
+      function () {
         MovieMZ_Slide(1);
       }
     );
   });
-  $(".js-savCookie").click(function() {
+  $(".js-savCookie").click(function () {
     let obj = {};
     obj.cate = [
       $("#cmbCateID option:selected").val(),
-      $("#cmbCateID option:selected").text()
+      $("#cmbCateID option:selected").text(),
     ];
     obj.status = [
       $("#cmbPostStatus option:selected").val(),
-      $("#cmbPostStatus option:selected").text()
+      $("#cmbPostStatus option:selected").text(),
     ];
     localStorage.MovieForm = JSON.stringify(obj);
     $(".js-lsCookie").html(`当前值：${obj.cate[1]} ${obj.status[1]}`);
@@ -164,19 +173,19 @@ function MovieMZ_Slide(scroll = 0) {
         padding: "10px",
         width: "820px",
         // height: "478px",
-        opacity: scroll
+        opacity: scroll,
       })
       .animate({
         top: ($(window).height() - intH) / 2 + $(window).scrollTop() - 59,
         left: ($(window).width() - $domBox.width()) / 2,
         height: "auto",
-        opacity: 1
+        opacity: 1,
       })
       .draggable();
     $("#mmz-text").val("");
     $("#tab2 p").css({
       padding: "0.1em 0",
-      lineHeight: "1.4em"
+      lineHeight: "1.4em",
     });
   } else {
     $domBox.fadeOut();
@@ -221,11 +230,11 @@ function MovieMZ_Get(id = "") {
     }
     return;
   }
-  $.getJSON(ajaxurl + `MovieMZ&token=${Token}`, function(data) {
+  $.getJSON(ajaxurl + `MovieMZ&token=${Token}`, function (data) {
     let str =
       '<table class="tableFull tableBorder tableBorder-thcenter"><tr><th>时间</th><th>文章标题</th><th>内容</th><th>操作</th></tr>';
     window.MovieData = data.data;
-    $.each(data.data, function(id, post) {
+    $.each(data.data, function (id, post) {
       // console.log(id, post);
       // return;
       str +=
@@ -262,7 +271,7 @@ function MovieMZ_Get(id = "") {
 }
 function MovieMZ_Del(id) {
   Token = $('meta[name="MovieMZ-Token"]').attr("content");
-  $.getJSON(ajaxurl + `MovieMZ&id=${id}&token=${Token}`, function(data) {
+  $.getJSON(ajaxurl + `MovieMZ&id=${id}&token=${Token}`, function (data) {
     // console.log(data);
     $("#movie-" + id + " .td15").html("已删除");
   });
