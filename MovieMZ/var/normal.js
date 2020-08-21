@@ -28,7 +28,7 @@
           //let doc = (new DOMParser).parseFromString(responseDetail.responseText, 'text/html');
           // callback(doc, responseDetail, meta);
         }
-      }
+      },
     });
   }
   function getJSON(url, callback) {
@@ -44,23 +44,22 @@
         } else {
           callback(false, url);
         }
-      }
+      },
     });
   }
   // main
-  const objCur = {};
+  const objCur = { easy: 0 };
 
-  objCur.dbLink =
+  objCur.link =
     "https://" + location.href.match(/movie.douban.com\/subject\/\d+\//);
-  objCur.dbID = location.href.match(/(\d{7,8})/g);
-  objCur.dbID = objCur.dbID[0];
+  objCur.id = location.href.match(/(\d{7,8})/g);
+  objCur.id = objCur.id[0];
   objCur.zhTitle = document.title.replace("(豆瓣)", "").trim();
   // objCur.fullTitle = $('#content h1>span[property="v:itemreviewed"]').text();
   // objCur.oriTitle = ((zh, full) => {
-  //   let ori = full.replace(zh, "").trim();
-  //   return ori;
-  // })(objCur.zhTitle,objCur.fullTitle);
-  // objCur.moreTitle = ((el)=>{
+  //   return full.replace(zh, "").trim();
+  // })(objCur.zhTitle, objCur.fullTitle);
+  // objCur.akaTitle = ((el) => {
   //   return el[0].nextSibling.nodeValue.trim();
   // })($('#info span.pl:contains("又名")'));
   objCur.type = (() => {
@@ -75,29 +74,23 @@
     if (is_series) return "电视剧";
   })();
   // API Gen
-  const urlAPI = `https://api.rhilip.info/tool/movieinfo/gen?site=douban&sid=${objCur.dbID}`;
+  const urlAPI = `https://api.rhilip.info/tool/movieinfo/gen?site=douban&sid=${objCur.id}`;
   console.log(urlAPI);
   getJSON(urlAPI, function (data) {
-    // console.log(data.format);
+    console.log(data);
     objCur.year = data.year;
-    objCur.format = data.format;
+    objCur.aka = data.aka;
+    objCur.akaTitle = data.aka.join(" / ");
+    objCur.frgTitle = data.foreign_title.replace(/\s/g, ".");
     objCur.tags = data.genre;
+    objCur.info = data.format;
   });
   console.log(objCur);
   // 点击事件
   $("h1>.year").click(function () {
-    const objPost = {
-      type: objCur.type,
-      title: objCur.zhTitle,
-      id: objCur.dbID,
-      tags: objCur.tags,
-      year: objCur.year,
-      easy: 0,
-      info: objCur.format,
-    };
-    console.log(objCur, objPost);
+    console.log(objCur);
     const urlPost = "-url-";
-    postData(urlPost, JSON.stringify(objPost));
+    postData(urlPost, JSON.stringify(objCur));
     GM_setClipboard(objCur.format);
     $(this)
       .css({ fontSize: "12px" })
@@ -111,7 +104,7 @@
         },
         377,
         function () {
-          $(this).text(`(${objPost.year.trim()})`);
+          $(this).text(`(${objCur.year.trim()})`);
         }
       )
       .delay(37)

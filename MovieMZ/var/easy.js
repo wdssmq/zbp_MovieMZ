@@ -9,7 +9,7 @@
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setClipboard
 // ==/UserScript==
-(function() {
+(function () {
   "use strict";
   console.log("strart");
   const $ = window.jQuery;
@@ -30,11 +30,12 @@
   obj.link =
     "https://" + location.href.match(/movie.douban.com\/subject\/\d+\//);
   obj.id = location.href.replace(/[^\d]+/g, "");
-  obj.title = document.title
-    .replace("(豆瓣)", "")
-    .trim()
-    .replace(/\s/g, ".");
-  obj.type = (function() {
+  obj.zhTitle = document.title.replace("(豆瓣)", "").trim().replace(/\s/g, ".");
+  obj.akaTitle = ((el) => {
+    return el[0].nextSibling.nodeValue.trim();
+  })($('#info span.pl:contains("又名")'));
+  obj.aka = obj.akaTitle.split(" / ");
+  obj.type = (function () {
     if (is_anime) return "动画";
     if (is_document) return "纪录片";
     if (is_movie) return "电影";
@@ -42,48 +43,35 @@
   })();
 
   obj.tags = $('#info span[property="v:genre"]')
-    .map(function() {
+    .map(function () {
       //类别
-      return $(this)
-        .text()
-        .trim();
+      return $(this).text().trim();
     })
     .toArray();
-  obj.name = $('#content h1>span[property="v:itemreviewed"]')
+  obj.frgTitle = $('#content h1>span[property="v:itemreviewed"]')
     .text()
-    .replace(obj.title, "")
+    .replace(obj.zhTitle, "")
     .trim();
-  obj.year = $("#content > h1 > span.year")
-    .text()
-    .substr(1, 4);
-  if (obj.name) {
-    obj.info = `中文名: ${obj.title}\n`;
-    obj.info += `片名: ${obj.name}\n`;
+  obj.year = $("#content > h1 > span.year").text().substr(1, 4);
+  if (obj.frgTitle) {
+    obj.info = `中文名: ${obj.zhTitle}\n`;
+    obj.info += `片名: ${obj.frgTitle}\n`;
+    obj.frgTitle = obj.frgTitle.replace(/[\s:!]+/g, ".");
   } else {
-    obj.info = `片名: ${obj.title}\n`;
+    obj.info = `片名: ${obj.zhTitle}\n`;
   }
   obj.info += `年代: ${obj.year}\n`;
-  obj.info +=
-    $("#info")
-      .text()
-      .trim() + "\n";
+  obj.info += $("#info").text().trim() + "\n";
   // obj.info += `豆瓣链接: ${obj.link}\n`;
-  obj.info +=
-    $(".rating_logo")
-      .text()
-      .trim() + ": ";
-  obj.info += $(".rating_num")
-    .text()
-    .trim();
+  obj.info += $(".rating_logo").text().trim() + ": ";
+  obj.info += $(".rating_num").text().trim();
   obj.info += "\n";
-  obj.info += $(".related-info")
-    .text()
-    .replace("©豆瓣", "")
-    .trim();
+  obj.info += $(".related-info").text().replace("©豆瓣", "").trim();
   obj.info = obj.info.replace(/\n[\s]+/g, "\n");
   obj.info = obj.info.replace(/官方网站: [^\n]+\n/g, "");
-  $("h1>.year").click(function() {
-    postData("-url-", obj, function(data) {
+  console.log(obj);
+  $("h1>.year").click(function () {
+    postData("-url-", obj, function (data) {
       console.log(data.data);
     });
     GM_setClipboard(obj.info);
@@ -95,34 +83,34 @@
       .delay(2737)
       .animate(
         {
-          opacity: 0
+          opacity: 0,
         },
         377,
-        function() {
+        function () {
           $(this).text(`(${obj.year.trim()})`);
         }
       )
       .delay(37)
       .animate({
         opacity: 1,
-        fontSize: "26px"
+        fontSize: "26px",
       });
   });
   // console.log(obj);
-  function postData(url, data, callback = function() {}) {
+  function postData(url, data, callback = function () {}) {
     GM_xmlhttpRequest({
       method: "POST",
       data: JSON.stringify(data),
       url: url,
       headers: {
         "User-agent": window.navigator.userAgent,
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-      onload: function(responseDetail) {
+      onload: function (responseDetail) {
         if (responseDetail.status === 200) {
           callback(JSON.parse(responseDetail.responseText), url);
         }
-      }
+      },
     });
   }
 })();

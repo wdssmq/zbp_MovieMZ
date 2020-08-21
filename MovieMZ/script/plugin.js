@@ -1,18 +1,15 @@
 $(function () {
-  $(".hint")
-    .css({
-      minHeight: "3px",
-    })
-    .find("p")
-    .addClass("hint_always");
-  $(".hint").hover(
-    function () {
-      $(this).find("p").stop(true, false).slideDown();
-    },
-    function () {
-      $(this).find("p").stop(false, true).delay(1300).slideUp();
-    }
-  );
+  // $(".hint").css({
+  //   minHeight: "3px",
+  // });
+  // $(".hint").hover(
+  //   function () {
+  //     $(this).find("p").stop(true, false).slideDown();
+  //   },
+  //   function () {
+  //     $(this).find("p").stop(false, true).delay(1300).slideUp();
+  //   }
+  // );
   const html =
     '<p>\
 <strong>\
@@ -106,8 +103,11 @@ $(function () {
     obj.href = arr[1].replace("磁力链：", "").trim().replace("&", "&amp;");
     obj.type = "BT";
     let $text = $("#mmz-text");
-    if ($text.data("name") && $text.data("title"))
-      obj.title = obj.title.replace($text.data("name"), $text.data("title"));
+    if ($text.data("frgTitle") && $text.data("zhTitle"))
+      obj.title = obj.title.replace(
+        $text.data("frgTitle"),
+        $text.data("zhTitle")
+      );
     let content = getContent();
     if (content.indexOf(obj.href) < 0) {
       content += "<hr class='movie' />";
@@ -201,27 +201,32 @@ function MovieMZ_Get(id = "") {
       return;
     }
     if (data.type) {
-      inpTitle = `【${data.type}】${data.title}`;
+      inpTitle = `【${data.type}】${data.zhTitle}`;
     }
-    inpTitle += `【${data.year}】`;
+    if (data.aka) {
+      // data.akaTitle = data.aka.join("/");
+    }
+    inpTitle += `丨${data.akaTitle}丨${data.frgTitle}【${data.year}】`;
     $("#edtTitle").val(inpTitle);
     // $("#edtType").val(data.Type);
     if (data.easy) {
       // let add = "资源名称: " + data.title + "." + data.name + "\n" + data.info;
       data.info = data.info.replace("上映日期: ", "-more-\n上映日期: ");
       data.info = data.info.replace("首播: ", "-more-\n首播: ");
+    } else {
+      data.info = data.info.replace(/\[img\][^\n]+\[\/img\]/, "").trim();
     }
     data.info = data.info.replace(/官方网站[^\n]+\n/g, "");
     data.info = data.info.replace(/\n/g, "</p>\n<p>");
     data.info = data.info.replace("<p>-more-</p>", '<hr class="more"/>');
     $("#editor_content").val(data.info);
     $("#edtTag").val(data.tags.join(","));
-    setContent(data.info);
+    setContent(data.info.trim());
 
     $(".content-box ul.content-box-tabs li a.tab2").trigger("click");
     $("#mmz-text").val("");
-    $("#mmz-text").data("title", data.title);
-    $("#mmz-text").data("name", data.name.replace(/[\s:!]+/g, "."));
+    $("#mmz-text").data("zhTitle", data.zhTitle);
+    $("#mmz-text").data("frgTitle", data.frgTitle.replace(/[\s:!]+/g, "."));
     if (localStorage.MovieForm) {
       let obj = JSON.parse(localStorage.MovieForm);
       $("#cmbCateID").val(obj.cate[0]);
@@ -247,7 +252,7 @@ function MovieMZ_Get(id = "") {
         '</td><td class="td15 tdCenter" title="' +
         id +
         '">' +
-        post.title +
+        post.zhTitle +
         '</td><td title="' +
         id +
         '"><textarea style="width: 90%; height: 150px">' +
