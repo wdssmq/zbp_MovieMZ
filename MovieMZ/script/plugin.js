@@ -203,8 +203,8 @@ function MovieMZ_Get(id = "") {
     if (data.type) {
       inpTitle = `【${data.type}】${data.zhTitle}`;
     }
-    if (data.aka) {
-      // data.akaTitle = data.aka.join("/");
+    if (data.aka && data.aka.length > 0) {
+      data.akaTitle = data.aka[0];
     }
     inpTitle += `丨${data.akaTitle}丨${data.frgTitle}【${data.year}】`;
     $("#edtTitle").val(inpTitle);
