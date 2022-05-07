@@ -144,16 +144,16 @@ function MovieMZ_Path($file, $t = "path")
   $result = $zbp->$t . "zb_users/plugin/MovieMZ/";
   switch ($file) {
     case "plugin":
-      return $result . "script/plugin.js?v=2020-08-21";
+      return $result . "script/plugin.js?v=20220507103";
       break;
     case "lock":
       return $result . "usr/lock.ini";
       break;
     case "w-css":
-      return $result . "web/w_style.css?v=2020-08-21";
+      return $result . "web/w_style.css?v=20220507103";
       break;
     case "w-js":
-      return $result . "web/w_script.js?v=2020-08-21";
+      return $result . "web/w_script.js?v=20220507103";
       break;
     case "w-html":
       return $result . "web/w_html.html";
