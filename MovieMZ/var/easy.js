@@ -70,47 +70,33 @@
   obj.info = obj.info.replace(/\n[\s]+/g, "\n");
   obj.info = obj.info.replace(/官方网站: [^\n]+\n/g, "");
   console.log(obj);
-  $("h1>.year").click(function () {
+  // 追加元素
+  const $js_info = $('<span class="pl">描述文本:</span>');
+  const $js_btn = $('<a class="js-post2zbp" href="javascript:void(0)">发送至 Z-BlogPHP</a>');
+  // const $js_edt = $('<span class="js-edt"></span>');
+  $("#info").append($js_info).append(" ").append($js_btn).append(" ");
+  $("#content h1,#info").append('<span class="js-edt"></span>');
+  // 绑定点击事件
+  $("h1>.year,.js-post2zbp").click(function () {
     postData("-url-", obj, function (data) {
       console.log(data.data);
     });
-    GM_setClipboard(obj.info);
-    $(this)
-      .css({ fontSize: "12px" })
-      .html(
-        '复制成功 <a href="-edtUrl-" target="_blank" rel="noopener noreferrer">新建文章</a>'
-      )
-      .delay(2737)
-      .animate(
-        {
-          opacity: 0,
-        },
-        377,
-        function () {
-          $(this).text(`(${obj.year.trim()})`);
-        }
-      )
-      .delay(37)
-      .animate({
-        opacity: 1,
-        fontSize: "26px",
-      });
+    // 显示 Z-BlogPHP 新建文章链接
+    $(".js-edt").html('<a href="-edtUrl-" target="_blank" rel="noopener noreferrer">新建文章</a');
+    // 写入剪切板
+    // GM_setClipboard(obj.info);
+    // 显示消息
+    const _this = $(this);
+    const _text = _this.text();
+
+    _this
+      .text(
+        '已发送'
+      );
+    setTimeout(function () {
+      if (!_this.hasClass("js-post2zbp")) {
+        _this.text(_text);
+      }
+    }, 1000);
   });
-  // console.log(obj);
-  function postData(url, data, callback = function () {}) {
-    GM_xmlhttpRequest({
-      method: "POST",
-      data: JSON.stringify(data),
-      url: url,
-      headers: {
-        "User-agent": window.navigator.userAgent,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      onload: function (responseDetail) {
-        if (responseDetail.status === 200) {
-          callback(JSON.parse(responseDetail.responseText), url);
-        }
-      },
-    });
-  }
 })();
