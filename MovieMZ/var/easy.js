@@ -1,11 +1,11 @@
 // ==UserScript==
-// @name         生成电影信息简易版
+// @name         「Z-BlogPHP」生成电影信息「简易版」
 // @namespace    http://www.wdssmq.com/
-// @version      0.1
-// @description  按格式生成电影描述信息；
+// @version      0.2
 // @author       沉冰浮水
+// @description  按格式生成电影描述信息；
 // @match        https://movie.douban.com/subject/*
-// @require      http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js
+// @require      https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.slim.js
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setClipboard
 // ==/UserScript==
