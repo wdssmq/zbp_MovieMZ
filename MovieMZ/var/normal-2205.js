@@ -9,6 +9,9 @@
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setClipboard
 // ==/UserScript==
+
+/* global GM_xmlhttpRequest, GM_setClipboard */
+
 (function () {
   "use strict";
   console.log("strart");

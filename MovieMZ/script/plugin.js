@@ -193,7 +193,7 @@ function MovieMZ_Slide(scroll = 0) {
 }
 function MovieMZ_Get(id = "") {
   let $domBox = $("#MovieMZ-Box");
-  Token = $("meta[name=\"MovieMZ-Token\"]").attr("content");
+  const Token = $("meta[name=\"MovieMZ-Token\"]").attr("content");
   if (id !== "" && window.MovieData) {
     let data = window.MovieData[id];
     let inpTitle;
@@ -274,8 +274,10 @@ function MovieMZ_Get(id = "") {
     $domBox.html(str);
   });
 }
+
+// eslint-disable-next-line no-unused-vars
 function MovieMZ_Del(id) {
-  Token = $("meta[name=\"MovieMZ-Token\"]").attr("content");
+  const Token = $("meta[name=\"MovieMZ-Token\"]").attr("content");
   $.getJSON(ajaxurl + `MovieMZ&id=${id}&token=${Token}`, function (data) {
     // console.log(data);
     $("#movie-" + id + " .td15").html("已删除");

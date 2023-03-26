@@ -9,6 +9,7 @@
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setClipboard
 // ==/UserScript==
+
 (function () {
   "use strict";
   console.log("strart");
@@ -78,6 +79,8 @@
   $("#content h1,#info").append("<span class=\"js-edt\"></span>");
   // 绑定点击事件
   $("h1>.year,.js-post2zbp").click(function () {
+    // todo: eslint
+    // eslint-disable-next-line no-undef
     postData("-url-", obj, function (data) {
       console.log(data.data);
     });
