@@ -25,7 +25,7 @@
       },
       onload: function (responseDetail) {
         if (responseDetail.status === 200) {
-          //let doc = (new DOMParser).parseFromString(responseDetail.responseText, 'text/html');
+          // let doc = (new DOMParser).parseFromString(responseDetail.responseText, 'text/html');
           // callback(doc, responseDetail, meta);
         }
       },
@@ -67,7 +67,7 @@
     const is_series = $("a.bn-sharing[data-type='电视剧']").length > 0;
     const is_anime = $("a[href='/tag/动画'], a[href='/tag/动漫']").length > 0;
     const is_document =
-      $('span[property="v:genre"]:contains("纪录片")').length > 0;
+      $("span[property=\"v:genre\"]:contains(\"纪录片\")").length > 0;
     if (is_anime) return "动画";
     if (is_document) return "纪录片";
     if (is_movie) return "电影";
@@ -95,7 +95,7 @@
     $(this)
       .css({ fontSize: "12px" })
       .html(
-        '复制成功 <a href="-edtUrl-" target="_blank" rel="noopener noreferrer">新建文章</a>'
+        "复制成功 <a href=\"-edtUrl-\" target=\"_blank\" rel=\"noopener noreferrer\">新建文章</a>",
       )
       .delay(2737)
       .animate(
@@ -105,7 +105,7 @@
         377,
         function () {
           $(this).text(`(${objCur.year.trim()})`);
-        }
+        },
       )
       .delay(37)
       .animate({

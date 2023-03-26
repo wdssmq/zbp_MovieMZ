@@ -11,13 +11,13 @@ $(function () {
   //   }
   // );
   const html =
-    '<p>\
+    "<p>\
 <strong>\
 -title-[-type-下载]：\
 </strong>\
 </p>\
-<p><a target="_blank" href="-href-" title="-title-[-type-下载]">-href-</a></p>\
-';
+<p><a target=\"_blank\" href=\"-href-\" title=\"-title-[-type-下载]\">-href-</a></p>\
+";
   function fnAddTi(str, i) {
     let ti = $("#edtTitle").val();
     if (ti.indexOf(str) > -1) {
@@ -43,7 +43,7 @@ $(function () {
     str = str.replace(/BluRay\.(720p|1080p)/, "$1.BluRay");
     // console.log(str);
     let objMatch = str.match(
-      /ed2k:\/\/\|file\|\[?(?<name>[^\.\]]+)\]?.*(?<year>\d{4})\.(?<p>[^\.]+)\.(?<s>[^\.]+).+-(?<by>.+)\.mkv\|(?<size>\d+)\|.+?\|\//
+      /ed2k:\/\/\|file\|\[?(?<name>[^\.\]]+)\]?.*(?<year>\d{4})\.(?<p>[^\.]+)\.(?<s>[^\.]+).+-(?<by>.+)\.mkv\|(?<size>\d+)\|.+?\|\//,
     );
     // console.log(objMatch);
     if (!objMatch) {
@@ -106,7 +106,7 @@ $(function () {
     if ($text.data("frgTitle") && $text.data("zhTitle"))
       obj.title = obj.title.replace(
         $text.data("frgTitle"),
-        $text.data("zhTitle")
+        $text.data("zhTitle"),
       );
     let content = getContent();
     if (content.indexOf(obj.href) < 0) {
@@ -140,7 +140,7 @@ $(function () {
       200,
       function () {
         MovieMZ_Slide(1);
-      }
+      },
     );
   });
   $(".js-savCookie").click(function () {
@@ -193,7 +193,7 @@ function MovieMZ_Slide(scroll = 0) {
 }
 function MovieMZ_Get(id = "") {
   let $domBox = $("#MovieMZ-Box");
-  Token = $('meta[name="MovieMZ-Token"]').attr("content");
+  Token = $("meta[name=\"MovieMZ-Token\"]").attr("content");
   if (id !== "" && window.MovieData) {
     let data = window.MovieData[id];
     let inpTitle;
@@ -218,7 +218,7 @@ function MovieMZ_Get(id = "") {
     }
     data.info = data.info.replace(/官方网站[^\n]+\n/g, "");
     data.info = data.info.replace(/\n/g, "</p>\n<p>");
-    data.info = data.info.replace("<p>-more-</p>", '<hr class="more"/>');
+    data.info = data.info.replace("<p>-more-</p>", "<hr class=\"more\"/>");
     $("#editor_content").val(data.info);
     $("#edtTag").val(data.tags.join(","));
     setContent(data.info.trim());
@@ -237,45 +237,45 @@ function MovieMZ_Get(id = "") {
   }
   $.getJSON(ajaxurl + `MovieMZ&token=${Token}`, function (data) {
     let str =
-      '<table class="tableFull tableBorder tableBorder-thcenter"><tr><th>时间</th><th>文章标题</th><th>内容</th><th>操作</th></tr>';
+      "<table class=\"tableFull tableBorder tableBorder-thcenter\"><tr><th>时间</th><th>文章标题</th><th>内容</th><th>操作</th></tr>";
     window.MovieData = data.data;
     $.each(data.data, function (id, post) {
       // console.log(id, post);
       // return;
       str +=
-        '<tr id="movie-' +
+        "<tr id=\"movie-" +
         id +
-        '"><td class="td10 tdCenter" title="' +
+        "\"><td class=\"td10 tdCenter\" title=\"" +
         id +
-        '">' +
+        "\">" +
         post.time +
-        '</td><td class="td15 tdCenter" title="' +
+        "</td><td class=\"td15 tdCenter\" title=\"" +
         id +
-        '">' +
+        "\">" +
         post.zhTitle +
-        '</td><td title="' +
+        "</td><td title=\"" +
         id +
-        '"><textarea style="width: 90%; height: 150px">' +
+        "\"><textarea style=\"width: 90%; height: 150px\">" +
         post.info +
-        '</textarea></td><td class="td15 tdCenter">' +
-        '<a onclick="return MovieMZ_Get(' +
+        "</textarea></td><td class=\"td15 tdCenter\">" +
+        "<a onclick=\"return MovieMZ_Get(" +
         id +
-        ')" href="javascript:;"><img src="' +
+        ")\" href=\"javascript:;\"><img src=\"" +
         bloghost +
-        'zb_system/image/admin/page_edit.png" alt="使用" title="使用" width="16"></a>&nbsp;&nbsp;&nbsp;&nbsp;' +
-        '<a onclick="return MovieMZ_Del(' +
+        "zb_system/image/admin/page_edit.png\" alt=\"使用\" title=\"使用\" width=\"16\"></a>&nbsp;&nbsp;&nbsp;&nbsp;" +
+        "<a onclick=\"return MovieMZ_Del(" +
         id +
-        ')" href="javascript:;" class="button"><img src="' +
+        ")\" href=\"javascript:;\" class=\"button\"><img src=\"" +
         bloghost +
-        '/zb_system/image/admin/delete.png" alt="删除" title="删除" width="16"></a></td></tr>';
+        "/zb_system/image/admin/delete.png\" alt=\"删除\" title=\"删除\" width=\"16\"></a></td></tr>";
     });
     str +=
-      '</table><p style="text-align: right;"><input class="button" onclick="$(\'#MovieMZ-Wraper\').fadeOut();return false;" value="关闭" type="button" /></p>';
+      "</table><p style=\"text-align: right;\"><input class=\"button\" onclick=\"$('#MovieMZ-Wraper').fadeOut();return false;\" value=\"关闭\" type=\"button\" /></p>";
     $domBox.html(str);
   });
 }
 function MovieMZ_Del(id) {
-  Token = $('meta[name="MovieMZ-Token"]').attr("content");
+  Token = $("meta[name=\"MovieMZ-Token\"]").attr("content");
   $.getJSON(ajaxurl + `MovieMZ&id=${id}&token=${Token}`, function (data) {
     // console.log(data);
     $("#movie-" + id + " .td15").html("已删除");

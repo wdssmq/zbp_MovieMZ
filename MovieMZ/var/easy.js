@@ -21,7 +21,7 @@
   let is_movie = $("a.bn-sharing[data-type='电影']").length > 0;
   let is_series = $("a.bn-sharing[data-type='电视剧']").length > 0;
   let is_anime = $("a[href='/tag/动画'], a[href='/tag/动漫']").length > 0;
-  let is_document = $('span[property="v:genre"]:contains("纪录片")').length > 0;
+  let is_document = $("span[property=\"v:genre\"]:contains(\"纪录片\")").length > 0;
   // const $imdb = $("div#info a[href^='http://www.imdb.com/title/tt']");
   // $imdb.html($imdb.attr("href"));
 
@@ -33,7 +33,7 @@
   obj.zhTitle = document.title.replace("(豆瓣)", "").trim().replace(/\s/g, ".");
   obj.akaTitle = ((el) => {
     return el[0].nextSibling.nodeValue.trim();
-  })($('#info span.pl:contains("又名")'));
+  })($("#info span.pl:contains(\"又名\")"));
   obj.aka = obj.akaTitle.split(" / ");
   obj.type = (function () {
     if (is_anime) return "动画";
@@ -42,13 +42,13 @@
     if (is_series) return "电视剧";
   })();
 
-  obj.tags = $('#info span[property="v:genre"]')
+  obj.tags = $("#info span[property=\"v:genre\"]")
     .map(function () {
-      //类别
+      // 类别
       return $(this).text().trim();
     })
     .toArray();
-  obj.frgTitle = $('#content h1>span[property="v:itemreviewed"]')
+  obj.frgTitle = $("#content h1>span[property=\"v:itemreviewed\"]")
     .text()
     .replace(obj.zhTitle, "")
     .trim();
@@ -71,18 +71,18 @@
   obj.info = obj.info.replace(/官方网站: [^\n]+\n/g, "");
   console.log(obj);
   // 追加元素
-  const $js_info = $('<span class="pl">描述文本:</span>');
-  const $js_btn = $('<a class="js-post2zbp" href="javascript:void(0)">发送至 Z-BlogPHP</a>');
+  const $js_info = $("<span class=\"pl\">描述文本:</span>");
+  const $js_btn = $("<a class=\"js-post2zbp\" href=\"javascript:void(0)\">发送至 Z-BlogPHP</a>");
   // const $js_edt = $('<span class="js-edt"></span>');
   $("#info").append($js_info).append(" ").append($js_btn).append(" ");
-  $("#content h1,#info").append('<span class="js-edt"></span>');
+  $("#content h1,#info").append("<span class=\"js-edt\"></span>");
   // 绑定点击事件
   $("h1>.year,.js-post2zbp").click(function () {
     postData("-url-", obj, function (data) {
       console.log(data.data);
     });
     // 显示 Z-BlogPHP 新建文章链接
-    $(".js-edt").html('<a href="-edtUrl-" target="_blank" rel="noopener noreferrer">新建文章</a');
+    $(".js-edt").html("<a href=\"-edtUrl-\" target=\"_blank\" rel=\"noopener noreferrer\">新建文章</a");
     // 写入剪切板
     // GM_setClipboard(obj.info);
     // 显示消息
@@ -91,7 +91,7 @@
 
     _this
       .text(
-        '已发送'
+        "已发送",
       );
     setTimeout(function () {
       if (!_this.hasClass("js-post2zbp")) {
