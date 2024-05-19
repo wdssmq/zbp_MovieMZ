@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
   // $(".hint").css({
   //   minHeight: "3px",
   // });
@@ -10,6 +10,7 @@ $(function () {
   //     $(this).find("p").stop(false, true).delay(1300).slideUp();
   //   }
   // );
+
   const html =
     "<p>\
 <strong>\
@@ -42,6 +43,7 @@ $(function () {
     // ed2k://|file|[毒液：致命守护者].Venom.2018.BluRay.1080p.x264.DTS-CMCT.mkv|10742193842|17b13dbbb460c53e57faff427fe6e806|/
     str = str.replace(/BluRay\.(720p|1080p)/, "$1.BluRay");
     // console.log(str);
+
     let objMatch = str.match(
       /ed2k:\/\/\|file\|\[?(?<name>[^\.\]]+)\]?.*(?<year>\d{4})\.(?<p>[^\.]+)\.(?<s>[^\.]+).+-(?<by>.+)\.mkv\|(?<size>\d+)\|.+?\|\//,
     );
@@ -119,7 +121,7 @@ $(function () {
       setContent(content + add);
     }
   }
-  $(".mmz-input").click(function () {
+  $(".mmz-input").click(function() {
     let text = $("#mmz-text").val().trim();
     let arr = text.split("\n");
     $("#mmz-text").data("cache", "");
@@ -138,12 +140,12 @@ $(function () {
         scrollTop: $("#insertintro").offset().top,
       },
       200,
-      function () {
+      function() {
         MovieMZ_Slide(1);
       },
     );
   });
-  $(".js-savCookie").click(function () {
+  $(".js-savCookie").click(function() {
     let obj = {};
     obj.cate = [
       $("#cmbCateID option:selected").val(),
@@ -235,11 +237,11 @@ function MovieMZ_Get(id = "") {
     }
     return;
   }
-  $.getJSON(ajaxurl + `MovieMZ&token=${Token}`, function (data) {
+  $.getJSON(ajaxurl + `MovieMZ&token=${Token}`, function(data) {
     let str =
       "<table class=\"tableFull tableBorder tableBorder-thcenter\"><tr><th>时间</th><th>文章标题</th><th>内容</th><th>操作</th></tr>";
     window.MovieData = data.data;
-    $.each(data.data, function (id, post) {
+    $.each(data.data, function(id, post) {
       // console.log(id, post);
       // return;
       str +=
@@ -278,7 +280,7 @@ function MovieMZ_Get(id = "") {
 // eslint-disable-next-line no-unused-vars
 function MovieMZ_Del(id) {
   const Token = $("meta[name=\"MovieMZ-Token\"]").attr("content");
-  $.getJSON(ajaxurl + `MovieMZ&id=${id}&token=${Token}`, function (data) {
+  $.getJSON(ajaxurl + `MovieMZ&id=${id}&token=${Token}`, function(data) {
     // console.log(data);
     $("#movie-" + id + " .td15").html("已删除");
   });

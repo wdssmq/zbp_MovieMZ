@@ -12,12 +12,12 @@
 
 /* global GM_xmlhttpRequest, GM_setClipboard */
 
-(function () {
+(function() {
   "use strict";
   console.log("strart");
   const $ = window.jQuery;
   // 定义基础方法
-  function postData(url, data, callback = function () {}) {
+  function postData(url, data, callback = function() {}) {
     GM_xmlhttpRequest({
       method: "POST",
       data: data,
@@ -26,7 +26,7 @@
         "User-agent": window.navigator.userAgent,
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      onload: function (responseDetail) {
+      onload: function(responseDetail) {
         if (responseDetail.status === 200) {
           // let doc = (new DOMParser).parseFromString(responseDetail.responseText, 'text/html');
           // callback(doc, responseDetail, meta);
@@ -41,7 +41,7 @@
       headers: {
         Accept: "application/json",
       },
-      onload: function (response) {
+      onload: function(response) {
         if (response.status >= 200 && response.status < 400) {
           callback(JSON.parse(response.responseText), url);
         } else {
@@ -79,7 +79,7 @@
   // API Gen
   const urlAPI = `https://api.rhilip.info/tool/movieinfo/gen?site=douban&sid=${objCur.id}`;
   console.log(urlAPI);
-  getJSON(urlAPI, function (data) {
+  getJSON(urlAPI, function(data) {
     console.log(data);
     objCur.year = data.year;
     objCur.aka = data.aka;
@@ -90,7 +90,7 @@
   });
   console.log(objCur);
   // 点击事件
-  $("h1>.year").click(function () {
+  $("h1>.year").click(function() {
     console.log(objCur);
     const urlPost = "-url-";
     postData(urlPost, JSON.stringify(objCur));
@@ -106,7 +106,7 @@
           opacity: 0,
         },
         377,
-        function () {
+        function() {
           $(this).text(`(${objCur.year.trim()})`);
         },
       )

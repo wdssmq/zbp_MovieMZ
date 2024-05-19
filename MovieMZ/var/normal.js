@@ -12,13 +12,13 @@
 
 /* global GM_xmlhttpRequest */
 
-(function () {
+(function() {
   "use strict";
   console.log("strart");
   const $ = window.jQuery;
 
   // 数据发送封装
-  function postData(url, data, callback = function () { }) {
+  function postData(url, data, callback = function() { }) {
     GM_xmlhttpRequest({
       method: "POST",
       data: JSON.stringify(data),
@@ -27,7 +27,7 @@
         "User-agent": window.navigator.userAgent,
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      onload: function (responseDetail) {
+      onload: function(responseDetail) {
         if (responseDetail.status === 200) {
           callback(JSON.parse(responseDetail.responseText), url);
         } else {
@@ -45,7 +45,7 @@
       headers: {
         Accept: "application/json",
       },
-      onload: function (response) {
+      onload: function(response) {
         if (response.status >= 200 && response.status < 400) {
           callback(JSON.parse(response.responseText), url);
         } else {
@@ -58,7 +58,7 @@
   function getData(obj) {
     const urlAPI = `http://api.iyuu.cn/index.php?s=App.Movie.Ptgen&url=${obj.link}`;
     console.log(urlAPI);
-    getJSON(urlAPI, function (data, url) {
+    getJSON(urlAPI, function(data, url) {
       if (data) {
         console.log(data);
         obj.info = data.data.format;
@@ -88,7 +88,7 @@
     return el[0].nextSibling.nodeValue.trim();
   })($("#info span.pl:contains(\"又名\")"));
   obj.aka = obj.akaTitle.split(" / ");
-  obj.type = (function () {
+  obj.type = (function() {
     if (is_anime) return "动画";
     if (is_document) return "纪录片";
     if (is_movie) return "电影";
@@ -96,7 +96,7 @@
   })();
 
   obj.tags = $("#info span[property=\"v:genre\"]")
-    .map(function () {
+    .map(function() {
       // 类别
       return $(this).text().trim();
     })
@@ -132,8 +132,8 @@
   $("#info").append($js_info).append(" ").append($js_btn).append(" ");
   $("#content h1,#info").append("<span class=\"js-edt\"></span>");
   // 绑定点击事件
-  $("h1>.year,.js-post2zbp").click(function () {
-    postData("-url-", obj, function (data) {
+  $("h1>.year,.js-post2zbp").click(function() {
+    postData("-url-", obj, function(data) {
       console.log(data.data);
     });
     // 显示 Z-BlogPHP 新建文章链接
@@ -148,7 +148,7 @@
       .text(
         "已发送",
       );
-    setTimeout(function () {
+    setTimeout(function() {
       if (!_this.hasClass("js-post2zbp")) {
         _this.text(_text);
       }

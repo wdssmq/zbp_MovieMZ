@@ -10,7 +10,7 @@
 // @grant        GM_setClipboard
 // ==/UserScript==
 
-(function () {
+(function() {
   "use strict";
   console.log("strart");
   const $ = window.jQuery;
@@ -36,7 +36,7 @@
     return el[0].nextSibling.nodeValue.trim();
   })($("#info span.pl:contains(\"又名\")"));
   obj.aka = obj.akaTitle.split(" / ");
-  obj.type = (function () {
+  obj.type = (function() {
     if (is_anime) return "动画";
     if (is_document) return "纪录片";
     if (is_movie) return "电影";
@@ -44,7 +44,7 @@
   })();
 
   obj.tags = $("#info span[property=\"v:genre\"]")
-    .map(function () {
+    .map(function() {
       // 类别
       return $(this).text().trim();
     })
@@ -78,10 +78,10 @@
   $("#info").append($js_info).append(" ").append($js_btn).append(" ");
   $("#content h1,#info").append("<span class=\"js-edt\"></span>");
   // 绑定点击事件
-  $("h1>.year,.js-post2zbp").click(function () {
+  $("h1>.year,.js-post2zbp").click(function() {
     // todo: eslint
     // eslint-disable-next-line no-undef
-    postData("-url-", obj, function (data) {
+    postData("-url-", obj, function(data) {
       console.log(data.data);
     });
     // 显示 Z-BlogPHP 新建文章链接
@@ -96,7 +96,7 @@
       .text(
         "已发送",
       );
-    setTimeout(function () {
+    setTimeout(function() {
       if (!_this.hasClass("js-post2zbp")) {
         _this.text(_text);
       }
